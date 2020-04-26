@@ -24,7 +24,7 @@ else
             @foreach (var rec in records)
             {
                 <tr>
-                    <td><a href="@rec.Fields["URL"]">@rec.Fields["Name"]</a></td>
+                    <td><a href="@rec.Fields.URL">@rec.Fields.Name</a></td>
                 </tr>
             }
         </tbody>
@@ -32,10 +32,10 @@ else
 }
 
 @code {
-    private List<AirtableRecord> records;
+    private List<AirtableRecord<Place>> records;
 
     protected override async Task OnInitializedAsync()
     {
-        records = await AirTableService.GetFoodAsync();
+        records = await AirTableService.GetPlacesAsync();
     }
 }

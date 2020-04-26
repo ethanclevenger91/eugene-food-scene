@@ -16,9 +16,9 @@ namespace EugeneFoodScene.Data
         private readonly string baseId;
         private readonly string appKey;
 
-        private List<AirtableRecord> _records;
+        private List<AirtableRecord<Place>> _records;
 
-        public List<AirtableRecord> Records => _records ??= GetFoodAsync().Result;
+        public List<AirtableRecord<Place>> Records => _records ??= GetPlacesAsync().Result;
 
         public AirTableService(IConfiguration configuration)
         {
@@ -26,9 +26,9 @@ namespace EugeneFoodScene.Data
             appKey = configuration["AirTable:AppKey"];
         }
 
-        public async Task<List<AirtableRecord>> GetFoodAsync()
+        public async Task<List<AirtableRecord<Place>>> GetPlacesAsync()
         {
-            var records = new List<AirtableRecord>();
+            var records = new List<AirtableRecord<Place>>();
             string offset = null;
 
             using (AirtableBase airtableBase = new AirtableBase(appKey, baseId))
@@ -36,13 +36,13 @@ namespace EugeneFoodScene.Data
                 do
                 {
 
-                    Task<AirtableListRecordsResponse> task = airtableBase.ListRecords(tableName:"Company", offset: offset );
+                    Task<AirtableListRecordsResponse<Place>> task = airtableBase.ListRecords<Place>(tableName:"Places", offset: offset );
 
-                    AirtableListRecordsResponse response = await task;
+                    var response = await task;
 
                     if (response.Success)
                     {
-                        records.AddRange(response.Records.ToList());
+                        records.AddRange(response.Records);
                         offset = response.Offset;
                     }
                     else if (response.AirtableApiError is AirtableApiException)
