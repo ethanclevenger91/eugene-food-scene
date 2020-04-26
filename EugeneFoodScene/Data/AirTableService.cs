@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AirtableApiClient;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
@@ -13,6 +15,10 @@ namespace EugeneFoodScene.Data
     {
         private readonly string baseId;
         private readonly string appKey;
+
+        private List<AirtableRecord> _records;
+
+        public List<AirtableRecord> Records => _records ??= GetFoodAsync().Result;
 
         public AirTableService(IConfiguration configuration)
         {
@@ -30,7 +36,7 @@ namespace EugeneFoodScene.Data
                 do
                 {
 
-                    Task<AirtableListRecordsResponse> task = airtableBase.ListRecords("Company", offset);
+                    Task<AirtableListRecordsResponse> task = airtableBase.ListRecords(tableName:"Company", offset: offset );
 
                     AirtableListRecordsResponse response = await task;
 

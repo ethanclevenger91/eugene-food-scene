@@ -18,14 +18,13 @@ else
         <thead>
             <tr>
                 <th>Name</th>
-               
             </tr>
         </thead>
         <tbody>
             @foreach (var rec in records)
             {
                 <tr>
-                    <td>@rec.Fields["Name"]</td>
+                    <td><a href="@rec.Fields["URL"]">@rec.Fields["Name"]</a></td>
                 </tr>
             }
         </tbody>
