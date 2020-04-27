@@ -16,9 +16,7 @@ namespace EugeneFoodScene.Data
         private readonly string baseId;
         private readonly string appKey;
 
-        private List<AirtableRecord<Place>> _records;
-
-        public List<AirtableRecord<Place>> Records => _records ??= GetPlacesAsync().Result;
+        private List<AirtableRecord<Place>> _places;
 
         public AirTableService(IConfiguration configuration)
         {
@@ -26,9 +24,17 @@ namespace EugeneFoodScene.Data
             appKey = configuration["AirTable:AppKey"];
         }
 
+        public void ResetPlaces()
+        {
+            _places = null;
+        }
+
         public async Task<List<AirtableRecord<Place>>> GetPlacesAsync()
         {
-            var records = new List<AirtableRecord<Place>>();
+            // check the cache
+            if (_places != null) return _places;
+
+            _places = new List<AirtableRecord<Place>>();
             string offset = null;
 
             using (AirtableBase airtableBase = new AirtableBase(appKey, baseId))
@@ -36,13 +42,14 @@ namespace EugeneFoodScene.Data
                 do
                 {
 
-                    Task<AirtableListRecordsResponse<Place>> task = airtableBase.ListRecords<Place>(tableName:"Places", offset: offset );
+                    Task<AirtableListRecordsResponse<Place>> task =
+                        airtableBase.ListRecords<Place>(tableName: "Places", offset: offset);
 
                     var response = await task;
 
                     if (response.Success)
                     {
-                        records.AddRange(response.Records);
+                        _places.AddRange(response.Records);
                         offset = response.Offset;
                     }
                     else if (response.AirtableApiError is AirtableApiException)
@@ -56,10 +63,11 @@ namespace EugeneFoodScene.Data
                         break;
                     }
 
-                } while (offset != null) ;
+                } while (offset != null);
 
-                return records;
+                   
             }
+            return _places;
         }
     }
 }

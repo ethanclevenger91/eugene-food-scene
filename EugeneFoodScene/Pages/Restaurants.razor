@@ -9,7 +9,7 @@
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (records == null)
+@if (places == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -22,10 +22,10 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var rec in records)
+            @foreach (var place in places)
             {
                 <tr>
-                    <td><a href="@rec.Fields.URL">@rec.Fields.Name</a></td>
+                    <td><a href="@place.URL">@place.Name</a></td>
                 </tr>
             }
         </tbody>
@@ -33,10 +33,11 @@ else
 }
 
 @code {
-    private List<AirtableRecord<Place>> records;
+    private List<Place> places;
 
     protected override async Task OnInitializedAsync()
     {
-        records = await AirTableService.GetPlacesAsync();
+        var records = await AirTableService.GetPlacesAsync();
+        places = (from r in records select r.Fields).ToList();
     }
 }
