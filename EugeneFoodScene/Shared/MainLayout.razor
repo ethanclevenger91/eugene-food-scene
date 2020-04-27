@@ -1,14 +1,18 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="sidebar">
+@*<div class="sidebar">
     <NavMenu />
-</div>
+</div>*@
 
 <div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
-
+    <RadzenImage Path="images/EugeneRestaurants-GoogleHeader.png"/>
+        <RadzenMenu>
+            <RadzenMenuItem Text="Restaurants" Path="restaurants" Icon="home"></RadzenMenuItem>
+            <RadzenMenuItem Text="Map" Path="menu" Icon="map"></RadzenMenuItem>
+            <RadzenMenuItem Text="Contribute"  Path="contribute" Icon="emoji_people"></RadzenMenuItem>
+            <RadzenMenuItem Text="About" Path="about" Icon="info"></RadzenMenuItem>
+        </RadzenMenu>
+  
     <div class="content px-4">
         @Body
     </div>
