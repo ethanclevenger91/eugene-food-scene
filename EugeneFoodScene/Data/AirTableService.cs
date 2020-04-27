@@ -18,6 +18,7 @@ namespace EugeneFoodScene.Data
 
         private List<AirtableRecord<Place>> _places;
         private List<AirtableRecord<Cuisine>> _cuisines;
+        private List<AirtableRecord<DeliveryService>> _deliveryServices;
 
         public AirTableService(IConfiguration configuration)
         {
@@ -43,6 +44,16 @@ namespace EugeneFoodScene.Data
             }
 
             return _cuisines.Where(c => c.Id == id).FirstOrDefault().Fields;
+        }
+
+        public async Task<DeliveryService> GetDeliveryServiceAsync(string id)
+        {
+            if (_deliveryServices == null)
+            {
+                _deliveryServices = await GetDeliveryServicesAsync();
+            }
+
+            return _deliveryServices.Where(c => c.Id == id).FirstOrDefault().Fields;
         }
 
         public async Task<List<AirtableRecord<Place>>> GetPlacesAsync()
@@ -125,6 +136,47 @@ namespace EugeneFoodScene.Data
 
             }
             return _cuisines;
+        }
+
+        public async Task<List<AirtableRecord<DeliveryService>>> GetDeliveryServicesAsync()
+        {
+            // check the cache
+            if (_deliveryServices != null) return _deliveryServices;
+
+            _deliveryServices = new List<AirtableRecord<DeliveryService>>();
+            string offset = null;
+
+            using (AirtableBase airtableBase = new AirtableBase(appKey, baseId))
+            {
+                do
+                {
+
+                    var task =
+                        airtableBase.ListRecords<DeliveryService>(tableName: "Delivery Services", offset: offset);
+
+                    var response = await task;
+
+                    if (response.Success)
+                    {
+                        _deliveryServices.AddRange(response.Records);
+                        offset = response.Offset;
+                    }
+                    else if (response.AirtableApiError is AirtableApiException)
+                    {
+                        throw new Exception(response.AirtableApiError.ErrorMessage);
+                        break;
+                    }
+                    else
+                    {
+                        throw new Exception("Unknown error");
+                        break;
+                    }
+
+                } while (offset != null);
+
+
+            }
+            return _deliveryServices;
         }
     }
 }

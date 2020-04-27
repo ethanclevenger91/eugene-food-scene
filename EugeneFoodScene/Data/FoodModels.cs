@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace EugeneFoodScene.Data
 {
@@ -20,6 +21,10 @@ namespace EugeneFoodScene.Data
         public List<Cuisine> CuisineList { get; set; }
         public String CuisineDisplay { get; set; }
 
+        [JsonProperty("Delivery Options")]
+        public List<String> DeliveryOptions { get; set; }
+        public List<DeliveryService> DeliveryServiceList { get; set; }
+        public String DeliveryOptionsDisplay { get; set; }
         public string Phone { get; set; }
         public string URL { get; set; }
         public string Address { get; set; }
@@ -48,9 +53,9 @@ namespace EugeneFoodScene.Data
     public class DeliveryService
     {
         public string Name { get; set; }
-        public List<Place> Places { get; set; }
+        public List<string> Places { get; set; }
 
-        public List<OrderDeliveryLink> OrderDeliveryLinks { get; set; }
+        public List<string> OrderDeliveryLinks { get; set; }
     }
 
     public class OrderDeliveryLink

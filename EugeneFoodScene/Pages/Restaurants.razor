@@ -22,6 +22,7 @@ else
         </RadzenGridColumn>
         <RadzenGridColumn TItem="Place" Property="Phone" Title="Phone" />
         <RadzenGridColumn TItem="Place" Property="CuisineDisplay" Title="Cuisines" />
+        <RadzenGridColumn TItem="Place" Property="DeliveryOptionsDisplay" Title="Delivery Services" />
         
         <RadzenGridColumn TItem="Place" Property="Address" Title="Address" />
     </Columns>
@@ -46,8 +47,23 @@ else
                 var fullCuisine = await AirTableService.GetCuisineAsync(cuisine);
                 place.CuisineList.Add(fullCuisine);
             }
+
+            if (place.DeliveryOptions != null)
+            {
+                place.DeliveryServiceList = new List<DeliveryService>();
+                foreach (var option in place.DeliveryOptions)
+                {
+                    var fullList = await AirTableService.GetDeliveryServiceAsync(option);
+                    place.DeliveryServiceList.Add(fullList);
+                }
+            }
+
             // convert to list like: "one, two, three"
             place.CuisineDisplay = String.Join(",", place.CuisineList.Select(c => c.Name));
+            if (place.DeliveryOptions != null)
+            {
+                place.DeliveryOptionsDisplay = String.Join(",", place.DeliveryServiceList.Select(c => c.Name));
+            }
         }
     }
 }
