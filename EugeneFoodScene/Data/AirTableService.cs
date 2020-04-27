@@ -17,6 +17,7 @@ namespace EugeneFoodScene.Data
         private readonly string appKey;
 
         private List<AirtableRecord<Place>> _places;
+        private List<AirtableRecord<Cuisine>> _cuisines;
 
         public AirTableService(IConfiguration configuration)
         {
@@ -27,6 +28,21 @@ namespace EugeneFoodScene.Data
         public void ResetPlaces()
         {
             _places = null;
+        }
+
+        public void ResetCuisines()
+        {
+            _cuisines = null;
+        }
+
+        public async Task<Cuisine> GetCuisineAsync(string id)
+        {
+            if (_cuisines == null)
+            {
+                _cuisines = await GetCuisinesAsync();
+            }
+
+            return _cuisines.Where(c => c.Id == id).FirstOrDefault().Fields;
         }
 
         public async Task<List<AirtableRecord<Place>>> GetPlacesAsync()
@@ -68,6 +84,47 @@ namespace EugeneFoodScene.Data
                    
             }
             return _places;
+        }
+
+        public async Task<List<AirtableRecord<Cuisine>>> GetCuisinesAsync()
+        {
+            // check the cache
+            if (_cuisines != null) return _cuisines;
+
+            _cuisines = new List<AirtableRecord<Cuisine>>();
+            string offset = null;
+
+            using (AirtableBase airtableBase = new AirtableBase(appKey, baseId))
+            {
+                do
+                {
+
+                    Task<AirtableListRecordsResponse<Cuisine>> task =
+                        airtableBase.ListRecords<Cuisine>(tableName: "Cuisines", offset: offset);
+
+                    var response = await task;
+
+                    if (response.Success)
+                    {
+                        _cuisines.AddRange(response.Records);
+                        offset = response.Offset;
+                    }
+                    else if (response.AirtableApiError is AirtableApiException)
+                    {
+                        throw new Exception(response.AirtableApiError.ErrorMessage);
+                        break;
+                    }
+                    else
+                    {
+                        throw new Exception("Unknown error");
+                        break;
+                    }
+
+                } while (offset != null);
+
+
+            }
+            return _cuisines;
         }
     }
 }

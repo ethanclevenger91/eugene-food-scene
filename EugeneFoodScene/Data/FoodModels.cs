@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace EugeneFoodScene.Data
 {
@@ -13,6 +14,12 @@ namespace EugeneFoodScene.Data
     {
         public string Name { get; set; }
         public List<String> Category { get; set; }
+
+        public List<String> Cuisines { get; set; }
+
+        public List<Cuisine> CuisineList { get; set; }
+        public String CuisineDisplay { get; set; }
+
         public string Phone { get; set; }
         public string URL { get; set; }
         public string Address { get; set; }
@@ -34,7 +41,8 @@ namespace EugeneFoodScene.Data
     public class Cuisine
     {
         public string Name { get; set; }
-        public List<Place> Places { get; set; }
+        public List<String> Places { get; set; }
+        public List<Place> PlacesList { get; set; }
     }
 
     public class DeliveryService
@@ -48,8 +56,8 @@ namespace EugeneFoodScene.Data
     public class OrderDeliveryLink
     {
         public string URL { get; set; }
-        public List<Place> Places { get; set; }
+        public List<String> Places { get; set; }
 
-        public List<DeliveryService> DeliveryServices { get; set; }
+        public List<String> DeliveryServices { get; set; }
     }
 }
