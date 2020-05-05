@@ -11,7 +11,8 @@
 }
 else
 {
-
+<RadzenFieldset Text="Resturants">
+    <RadzenIcon Icon="feedback" />Better search is coming soon.  For now, you can filter any column by typing a few letters after the <RadzenIcon Icon="search" />
 <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="15"
             AllowSorting="true" Data="@places" TItem="Place">
     <Columns>
@@ -27,6 +28,7 @@ else
         <RadzenGridColumn TItem="Place" Property="Address" Title="Address" />
     </Columns>
 </RadzenGrid>
+</RadzenFieldset>
 }
 
 @code {
