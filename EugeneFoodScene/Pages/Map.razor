@@ -1,0 +1,69 @@
+﻿@page "/map"
+
+@using AirtableApiClient
+@using EugeneFoodScene.Data
+@using GoogleMapsComponents
+@using GoogleMapsComponents.Maps
+
+
+@inject AirTableService AirTableService
+
+<RadzenFieldset Text="Map">
+    <GoogleMap @ref="@map1" Id="map1"
+               Options="@mapOptions"
+               OnAfterInit="@(async () => await OnAfterMapInitAsync())">
+
+    </GoogleMap>
+</RadzenFieldset>
+
+@code {
+
+    private GoogleMap map1;
+    private MapOptions mapOptions;
+
+    private List<Data.Place> places;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var records = await AirTableService.GetPlacesAsync();
+        places = (from r in records select r.Fields).ToList();
+        
+        mapOptions = new MapOptions()
+        {
+            Zoom = 10,
+            Center = new LatLngLiteral()
+            {
+                Lat = 44.049735,
+                Lng = -123.092554
+            },
+            MapTypeId = MapTypeId.Roadmap
+        };
+
+    }
+    private async Task OnAfterMapInitAsync()
+    {
+        foreach (var pin in places)
+        {
+            await AddMarker(pin.Name,pin.Latitude, pin.Longitude);
+        }
+
+    }
+    private async Task AddMarker(string label,double lat, double lng)
+    {
+        var marker = await Marker.CreateAsync(map1.JsRuntime, new MarkerOptions()
+        {
+            Position = new LatLngLiteral{ Lat = lat, Lng = lng},
+            Map = map1.InteropObject,
+            Label = label,
+            Icon = new Icon()
+            {
+                Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+            }
+        });
+
+ 
+    //markers.Push(marker);
+
+      
+    }
+}
