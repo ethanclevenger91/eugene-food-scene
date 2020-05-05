@@ -11,7 +11,7 @@
 }
 else
 {
-
+<RadzenFieldset Text="Resturants">
 <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="15"
             AllowSorting="true" Data="@places" TItem="Place">
     <Columns>
@@ -27,6 +27,7 @@ else
         <RadzenGridColumn TItem="Place" Property="Address" Title="Address" />
     </Columns>
 </RadzenGrid>
+</RadzenFieldset>
 }
 
 @code {
