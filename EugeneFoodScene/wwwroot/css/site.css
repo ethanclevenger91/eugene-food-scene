@@ -175,4 +175,8 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+    .header {
+        background-image: url("/images/header-back.png");
+        background-repeat: repeat-x;
+    }
 }
