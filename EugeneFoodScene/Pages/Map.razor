@@ -27,7 +27,7 @@
     {
         var records = await AirTableService.GetPlacesAsync();
         places = (from r in records select r.Fields).ToList();
-        
+
         mapOptions = new MapOptions()
         {
             Zoom = 10,
@@ -54,16 +54,15 @@
         {
             Position = new LatLngLiteral{ Lat = lat, Lng = lng},
             Map = map1.InteropObject,
-            Label = label,
-            Icon = new Icon()
-            {
-                Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-            }
+            //Icon = new Icon()
+            //{
+            //    Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+            //}
         });
 
- 
-    //markers.Push(marker);
 
-      
+        //markers.Push(marker);
+
+
     }
 }
