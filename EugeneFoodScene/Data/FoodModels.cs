@@ -30,7 +30,7 @@ namespace EugeneFoodScene.Data
         public string Address { get; set; }
         public string Notes { get; set; }
         public List<OrderDeliveryLink> OrderDeliveryLinks { get; set; }
-        public string Menu { get; set; }
+        public List<String> Menu { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
