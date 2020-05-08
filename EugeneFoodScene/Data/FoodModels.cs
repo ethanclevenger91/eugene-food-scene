@@ -56,7 +56,6 @@ namespace EugeneFoodScene.Data
     {
         public string Name { get; set; }
         public List<string> Places { get; set; }
-
         public List<string> OrderDeliveryLinks { get; set; }
     }
 
@@ -64,7 +63,6 @@ namespace EugeneFoodScene.Data
     {
         public string URL { get; set; }
         public List<String> Places { get; set; }
-
         public List<String> DeliveryServices { get; set; }
     }
 }
