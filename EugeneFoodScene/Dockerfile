@@ -1,10 +1,4 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
+FROM mvpstudio/dotnet:v01 as base
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["EugeneFoodScene.csproj", ""]
@@ -17,6 +11,8 @@ FROM build AS publish
 RUN dotnet publish "EugeneFoodScene.csproj" -c Release -o /app/publish
 
 FROM base AS final
-WORKDIR /app
+USER mvp
+WORKDIR /home/mvp/app
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "EugeneFoodScene.dll"]
