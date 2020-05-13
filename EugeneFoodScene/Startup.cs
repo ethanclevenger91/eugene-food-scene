@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using EugeneFoodScene.Data;
+using Ganss.XSS;
 using Microsoft.Extensions.Options;
 
 namespace EugeneFoodScene
@@ -32,6 +33,7 @@ namespace EugeneFoodScene
             services.AddServerSideBlazor();
             
             services.AddSingleton(new AirTableService(Configuration));
+            services.AddTransient<HtmlSanitizer>();
 
         }
 

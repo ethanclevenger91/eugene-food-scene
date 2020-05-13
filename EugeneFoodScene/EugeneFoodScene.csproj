@@ -12,8 +12,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Data\contribute.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\contribute.md" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Airtable" Version="1.1.2" />
     <PackageReference Include="BlazorGoogleMaps" Version="0.6.3" />
+    <PackageReference Include="EmbeddedBlazorContent" Version="1.10.0" />
+    <PackageReference Include="HtmlSanitizer" Version="5.0.319" />
+    <PackageReference Include="Markdig" Version="0.20.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     <PackageReference Include="Radzen.Blazor" Version="2.6.10" />
   </ItemGroup>
